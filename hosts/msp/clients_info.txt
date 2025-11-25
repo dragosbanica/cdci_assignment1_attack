@@ -1,2 +1,5 @@
 Client1 VPN IP: 10.0.0.3
-Client1 creds: user=admin pass=1234
+Client1 creds: user=user1 pass=pas123
+
+Client2 VPN IP: 10.0.0.4
+Client2 creds: user=admin pass=supersecret
